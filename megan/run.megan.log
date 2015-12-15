@@ -1,0 +1,608 @@
+                                                                     
+     This program uses the EPA-AREAL/MCNC-EnvPgms/BAMS Models-3      
+     I/O Applications Programming Interface, [I/O API] which is      
+     built on top of the netCDF I/O library (Copyright 1993, 1996    
+     University Corporation for Atmospheric Research/Unidata         
+     Program) and the PVM parallel-programming library (from         
+     Oak Ridge National Laboratory).  Copyright (C) 1992-2002 MCNC   
+     and Carlie J. Coats, Jr., and 2003-2012 Baron Advanced          
+     Meteorological Systems, LLC and released under the GNU LGPL     
+     License, version 2.1.  See URL                                  
+                                                                     
+         http://www.baronams.com/products/ioapi/LGPL.txt             
+                                                                     
+     for conditions of use.                                          
+                                                                     
+     Library release tag: $JDate: 2012262 $                          
+                                                                     
+     $Id: @(#) ioapi library version 3.1 $
+     Version with PARMS3.EXT/PARAMETER::MXVARS3= 2048
+     netCDF version 4.3.2 of Jul 24 2014 15:49:18 $
+      
+      
+     Missing environment variable EXECUTION_ID
+     Value for IOAPI_CHECK_HEADERS not defined;returning default:   FALSE
+      
+     "ECMAP" opened as OLD:READ-ONLY   
+     File name "/cair-forecast/aqfs/data/2015-10-02/emiss/biogenic/2015-10-04/EFMAP_LAI_d02.ncf"
+     File type GRDDED3 
+     Execution ID "????????????????"
+     Grid name "MCIPOUT_d02"
+     Dimensions: 147 rows, 117 cols, 1 lays, 37 vbles
+     NetCDF ID:     65536  opened as READONLY            
+     Time-independent data.
+      
+     "TMPFILE" opened as OLD:READ-ONLY   
+     File name "/cair-forecast/aqfs/data/2015-10-02/meteo/MCIPOUT_d02/2015-10-04/METCRO2D_MCIPOUT"
+     File type GRDDED3 
+     Execution ID "mcip"
+     Grid name "METCRO_MCIPOUT_d"
+     Dimensions: 147 rows, 117 cols, 1 lays, 33 vbles
+     NetCDF ID:    131072  opened as READONLY            
+     Starting date and time  2015277:000000 (0:00:00   Oct. 4, 2015)
+     Timestep                          010000 (1:00:00 hh:mm:ss)
+     Maximum current record number        25
+      
+     "RADFILE" opened as OLD:READ-ONLY   
+     File name "/cair-forecast/aqfs/data/2015-10-02/meteo/MCIPOUT_d02/2015-10-04/METCRO2D_MCIPOUT"
+     File type GRDDED3 
+     Execution ID "mcip"
+     Grid name "METCRO_MCIPOUT_d"
+     Dimensions: 147 rows, 117 cols, 1 lays, 33 vbles
+     NetCDF ID:    196608  opened as READONLY            
+     Starting date and time  2015277:000000 (0:00:00   Oct. 4, 2015)
+     Timestep                          010000 (1:00:00 hh:mm:ss)
+     Maximum current record number        25
+     Value for SDATE:  2015277
+     Value for STIME:  0
+     Value for RLENG:  250000
+     Value for TSTEP:  10000
+     Value for TEMPVAR:  'TEMP2'
+     Value for SRADVAR:  'RGRND'
+     Value for MGNTONHR:  N returning FALSE
+     Value for ONLN_DTEMP:  Y returning TRUE
+     Value for ONLN_DSRAD:  Y returning TRUE
+     
+     Value for IOAPI_CHECK_HEADERS not defined;returning default:   FALSE
+     Value for IOAPI_OFFSET_64 not defined;returning default:   FALSE
+      
+     "EROUT" opened as NEW(CREAT/TRUNC)
+     File name "/cair-forecast/aqfs/data/2015-10-02/emiss/biogenic/2015-10-04/ER_MEGAN_2015-10-04_d02.ncf"
+     File type GRDDED3 
+     Execution ID "????????????????"
+     Grid name "METCRO_MCIPOUT_d"
+     Dimensions: 147 rows, 117 cols, 1 lays, 22 vbles
+     NetCDF ID:    262144  opened as READWRITE           
+     Starting date and time  2015277:000000 (0:00:00   Oct. 4, 2015)
+     Timestep                          010000 (1:00:00 hh:mm:ss)
+     Maximum current record number         0
+     Processing day: 2015277 Time:       0 OCT
+     Processing: ISOP
+     Value for IOAPI_LOG_WRITE:  F returning FALSE
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015277 Time:   10000 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015277 Time:   20000 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015277 Time:   30000 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015277 Time:   40000 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015277 Time:   50000 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015277 Time:   60000 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015277 Time:   70000 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015277 Time:   80000 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015277 Time:   90000 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015277 Time:  100000 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015277 Time:  110000 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015277 Time:  120000 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015277 Time:  130000 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015277 Time:  140000 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015277 Time:  150000 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015277 Time:  160000 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015277 Time:  170000 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015277 Time:  180000 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015277 Time:  190000 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015277 Time:  200000 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015277 Time:  210000 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015277 Time:  220000 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015277 Time:  230000 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     Processing day: 2015278 Time:       0 OCT
+     Processing: ISOP
+     Processing: MYRC
+     Processing: SABI
+     Processing: LIMO
+     Processing: 3CAR
+     Processing: OCIM
+     Processing: BPIN
+     Processing: APIN
+     Processing: OMTP
+     Processing: FARN
+     Processing: BCAR
+     Processing: OSQT
+     Processing: MBO
+     Processing: MEOH
+     Processing: ACTO
+     Processing: CH4
+     Processing: NO
+     Processing: ACTA
+     Processing: FORM
+     Processing: CO
+     
+     --->> Normal Completion of program MEGAN
+     
+     

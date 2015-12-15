@@ -1,0 +1,245 @@
+#!/bin/sh -f
+#PBS -N wrf
+#PBS -q forecast
+#PBS -l nodes=128
+#PBS -l walltime=12:00:00
+#PBS -k oe
+#PBS -j oe
+#PBS -m abe
+##PBS -M v.singh3@herts.ac.uk 
+
+echo '<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>'
+echo -n 'Job is running on node(s) '; cat $PBS_NODEFILE
+echo '<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>'
+echo PBS_O_HOST      = $PBS_O_HOST
+echo PBS_O_QUEUE     = $PBS_O_QUEUE
+echo PBS_QUEUE       = $PBS_QUEUE
+echo PBS_O_WORKDIR   = $PBS_O_WORKDIR
+echo PBS_ENVIRONMENT = $PBS_ENVIRONMENT
+echo PBS_JOBID       = $PBS_JOBID
+echo PBS_JOBNAME     = $PBS_JOBNAME
+echo PBS_NODEFILE    = $PBS_NODEFILE
+echo PBS_O_HOME      = $PBS_O_HOME
+echo PBS_O_PATH      = $PBS_O_PATH
+echo '<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>'
+
+cd $PBS_O_WORKDIR
+
+
+#export MY_EXE=wrf.exe
+export MPIRUN=/usr/local/bin/mpiexec
+
+
+#Delete files
+#del_log_files.csh
+#rm -r geogrid.o* real.o* ungrib.o* wrf.o*  # Delete files from home folder
+
+
+
+FDatei=20060513  					# Date of forecast (YYYYMMDD)
+NumDays=3						# Number of days to be forecasted
+
+FDate=`date -d "${FDatei} 0 day" +%F`    #YYYY-MM-DD
+EnDate=`date -d "${FDatei} ${NumDays} day" +%F`	#YYYY-MM-DD
+
+
+
+echo $FDate $EnDate 
+
+StDD=`date -d "${FDate}H01 -1 days" +%d`
+StMM=`date -d "${FDate}H01 -1 days" +%m`
+StYYYY=`date -d "${FDate}H01 -1 days" +%Y`
+
+EnDD=`date -d "${EnDate}H01" +%d`
+EnMM=`date -d "${EnDate}H01" +%m`
+EnYYYY=`date -d "${EnDate}H01" +%Y`
+
+
+echo $StDD $StMM $StYYYY $EnDD $EnMM $EnYYYY 
+
+
+cd ./wps_wrf
+
+# Update namelist.wps file
+  sed "s/@sYYYY@/$StYYYY/g;s/@sMM@/$StMM/g;s/@sDD@/$StDD/g; \
+      s/@eYYYY@/$EnYYYY/g;s/@eMM@/$EnMM/g;s/@eDD@/$EnDD/g" \
+     namelist.wps.sam > namelist.wps
+
+# Update namelist.input file
+  sed "s/@sYYYY@/$StYYYY/g;s/@sMM@/$StMM/g;s/@sDD@/$StDD/g; \
+      s/@eYYYY@/$EnYYYY/g;s/@eMM@/$EnMM/g;s/@eDD@/$EnDD/g; \
+      s/@FDate@/$FDate/g" namelist.input.sam > namelist.input
+
+
+
+#link_grib.csh 
+link_grib.csh /cair-forecast/aqfs/inDATA/ecmwf/ECMWF_AN_200605
+./geogrid.exe > geogrid.log
+./ungrib.exe > ungrib.log
+$MPIRUN metgrid.exe
+$MPIRUN real.exe
+
+#WRF
+mkdir -p ../../data/$FDate/meteo/WRFOUT  #create wrf output directory
+$MPIRUN wrf.exe
+
+echo 'Finished WRF...'
+echo '*****************'
+
+
+
+#Date controls
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+date_ini=`date -d "${FDate} 0 day" +%Y%m%d`       # Initial date yyyymmdd (Date comes from FDate, that is forecast date)
+date_end=`date -d "${date_ini} 2 day" +%Y%m%d` 
+
+
+echo $date_ini $date_end
+
+step_days=1  
+di=$date_ini
+
+
+while [ $di -le $date_end ] ;  do # Date loop for three days
+
+
+CuDate=`date -d "${di}" +%F` 				#Current date
+NeDate=`date -d "${di} 1 day" +%F` 			#Next date
+PrDate=`date -d "${di} -1 day" +%F`			#previous date
+
+jd=`date -d "${di}" +%j`                		#Julian Day ddd
+
+
+CuDD=`date -d "${di}H01 -1 days" +%d`   		#Current day DD
+CuMM=`date -d "${di}H01 -1 days" +%m`			#Current month MM
+CuYYYY=`date -d "${di}H01 -1 days" +%Y`			#Current yest YYYY
+
+JDAY=$CuYYYY$jd						#Julian day YYYYddd format
+
+## Script to get the season or summer time
+DMar="03 $CuYYYY"
+DOct="10 $CuYYYY"
+
+dMarLS=$(cal $DMar | awk 'NF>0{a=$1} END{print a}') #Last sunday in March
+dOctLS=$(cal $DOct | awk 'NF>0{a=$1} END{print a}') #Last sunday in October
+
+jdMar=`date -d $CuYYYY'03'$dMarLS +%j`  
+jdOct=`date -d $StYYYY'10'$dOctLS +%j`  
+
+    if [[ $jd -lt $CuMar ]] || [[ $jd -ge $jdOct ]]; then
+      SEASON="winter"
+    else
+      SEASON="summer"
+    fi
+
+
+#echo $CuYYYY $jd $JDAY $CuDD $FDate $CuDate $SEASON 
+#echo $jdMar $jdOct
+
+
+#Run MCIP
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+cd ../mcip/
+
+echo 'Running MCIP3 for Date:'$FDate $CuDate
+echo '*****************'
+
+
+ sed -e "s/@cDate@/$CuDate/g;s/@pDate@/$PrDate/g;s/@nDate@/$NeDate/g;\
+s/@FDate@/$FDate/g"  run.mcip.d1 > run.mcip.d1.tmp;
+  chmod +x run.mcip.d1.tmp
+  ./run.mcip.d1.tmp >& mcip_d1.log
+  
+echo 'Domain 1 finished'
+
+ sed -e "s/@cDate@/$CuDate/g;s/@pDate@/$PrDate/g;s/@nDate@/$NeDate/g;\
+s/@FDate@/$FDate/g" run.mcip.d2 > run.mcip.d2.tmp;
+  chmod +x run.mcip.d2.tmp
+  ./run.mcip.d2.tmp >& mcip_d2.log
+
+
+echo 'Domain 2 finished'
+echo 'Finished MCIP3...'
+echo '*****************'
+
+
+
+#########################################################
+#Domain Loop
+#DOMN=02 				# Domain number
+		for DOMN
+		     in 01 02
+		     do
+		     
+#Run MEGAN
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++		     
+cd ../megan/
+
+echo 'Running MEGAN for Date:'$FDate $CuDate 'and Domain:'$DOMN
+echo '*****************'
+
+ sed -e "s/@cDate@/$CuDate/g;s/@JulDay@/$JDAY/g;s/@Domain@/$DOMN/g;\
+s/@FDate@/$FDate/g" run.megan.sam > run.megan.tmp;
+  chmod +x run.megan.tmp
+  ./run.megan.tmp >& megan.log
+echo 'Finished MEGAN..'
+echo '*****************'
+
+
+
+#Run SMOKE
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+cd ../smoke/
+
+echo 'Running SMOKE for Date:'$FDate $CuDate 'and Domain:'$DOMN
+echo '*****************'
+
+ sed -e "s/@cDate@/$CuDate/g;s/@JulDay@/$JDAY/g;s/@Domain@/$DOMN/g;\
+         s/@cYear@/$CuYYYY/g;s/@Season@/$SEASON/g;\
+         s/@FDate@/$FDate/g" ASSIGNS.ensclim.cmaq.cb05 > ASSIGNS.ensclim.cmaq.cb05.sh;
+#  chmod +x ASSIGNS.ensclim.cmaq.cb05.sh
+
+echo 'Area source'
+  ./smk_ar_ensclim.csh >& /dev/null
+echo 'Point source'
+  ./smk_pt_ensclim.csh >& /dev/null
+echo 'merging all source'  
+  ./smk_mrgall_ensclim.csh >& /dev/null
+
+echo 'Finished SMOKE..'
+echo '*****************'
+
+#@Domain@ @FDate@ @CuDate@ @JulDay@
+
+
+
+
+
+
+
+
+
+
+
+
+
+done # For loop end for domain
+
+di=`date -d "${di}H01 $step_days days" +%Y%m%d`
+done  # Date loop end
+
+cd ../wps_wrf/
+
+
+
+
+
+
+
+
+
+echo '<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>'
+echo Job terminated
+echo '<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>'

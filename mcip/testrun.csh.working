@@ -1,0 +1,28 @@
+#!/bin/csh -f
+
+clear
+
+#di=date input in format YYYYMMDD
+#di=20040301
+#echo 'Type date in format YYYYMMDD:' 
+#set read di
+set di=20060503
+
+
+#Current date
+set cDD=`date -d "${di}" +%F`
+set nDD=`date -d "${di} 1 day" +%F`
+set pDD=`date -d "${di} -1 day" +%F`
+
+echo 'Running MCIP3 for date:'$cDD
+echo '*****************'
+
+  sed -e 's/@cDate@/'"$cDD"'/' \
+      -e 's/@pDate@/'"$pDD"'/'	   \
+      -e 's/@nDate@/'"$nDD"'/'	   \
+      run.mcip.d2 > run.mcip.d2.tmp;
+  chmod +x run.mcip.d2.tmp
+  ./run.mcip.d2.tmp >& mcip.log
+
+echo 'Finished MCIP3...'
+echo '*****************'

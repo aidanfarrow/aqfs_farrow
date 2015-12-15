@@ -1,0 +1,45 @@
+#!/bin/csh -f
+#PBS -N gfs@cFDATE@@cFTIME@_@FHR@
+#PBS -q forecast
+#PBS -p +32
+#PBS -l nodes=1
+#PBS -l walltime=00:05:00
+#PBS -k oe
+#PBS -j oe
+##PBS -m abe
+##PBS -M v.singh3@herts.ac.uk 
+
+echo '<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>'
+echo -n 'Job is running on node(s) '; cat $PBS_NODEFILE
+echo '<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>'
+echo PBS_O_HOST      = $PBS_O_HOST
+echo PBS_O_QUEUE     = $PBS_O_QUEUE
+echo PBS_QUEUE       = $PBS_QUEUE
+echo PBS_O_WORKDIR   = $PBS_O_WORKDIR
+echo PBS_ENVIRONMENT = $PBS_ENVIRONMENT
+echo PBS_JOBID       = $PBS_JOBID
+echo PBS_JOBNAME     = $PBS_JOBNAME
+echo PBS_NODEFILE    = $PBS_NODEFILE
+echo PBS_O_HOME      = $PBS_O_HOME
+echo PBS_O_PATH      = $PBS_O_PATH
+echo '<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>'
+
+cd $PBS_O_WORKDIR
+
+setenv DNLOPATH /cair-forecast/aqfs/inDATA/GFS
+#mkdir ./gfs.@cFDATE@@cFTIME@
+
+#lftp -c "pget -n 8 ftp://140.90.101.180/pub/data/nccf/com/gfs/prod/gfs.2013122900/gfs.t00z.pgrb2bf09"
+#lftp -c "pget -c -n 8 ftp://140.90.101.180/pub/data/nccf/com/gfs/prod/gfs.@cFDATE@@cFTIME@/gfs.t@cFTIME@z.pgrb2bf@FHR@"
+
+#lftp -c "net:timeout 5; set net:reconnect-interval-base 5; set net:max-retries 5; pget -c -n 8 ftp://140.90.101.180/pub/data/nccf/com/gfs/prod/gfs.@cFDATE@@cFTIME@/gfs.t@cFTIME@z.pgrb2bf@FHR@ -o ./gfs.@cFDATE@@cFTIME@/"
+
+#to donalowed GFS
+#lftp -c "set net:timeout 5; set net:reconnect-interval-base 2; set net:max-retries 15; pget -c -n 1 ftp://140.90.101.180/pub/data/nccf/com/gfs/prod/gfs.@cFDATE@@cFTIME@/gfs.t@cFTIME@z.pgrb2bf@FHR@ -o ./gfs.@cFDATE@@cFTIME@/GFS.@cFDATE@@cFTIME@_@FHR@.grib2"
+lftp -c "set net:timeout 5; set net:reconnect-interval-base 2; set net:max-retries 15; pget -c -n 1 ftp://140.90.101.180/pub/data/nccf/com/gfs/prod/gfs.@cFDATE@@cFTIME@/gfs.t@cFTIME@z.pgrb2f@FHR@ -o ${DNLOPATH}/gfs.@cFDATE@@cFTIME@/GFS.@cFDATE@@cFTIME@_@FHR@.grib2"
+
+
+#To Download MACC
+#lftp -u macc,12Macc09 ftp.cnrm-game-meteo.fr -e "set net:timeout 5; set net:reconnect-interval-base 2; set net:max-retries 15;pget -c -n 1 /ENS/HRES_ENS_@cFDATE@@cFTIME@+0@FHR@.grib2;bye"
+#lftp -u macc,12Macc09 ftp.cnrm-game-meteo.fr -e "set net:timeout 5; set net:reconnect-interval-base 2; set net:max-retries 15;pget -c -n 1 /NETCDF/HRES_ENS_@cFDATE@@cFTIME@+0@FHR@.nc;bye"
+#HRES_ENS_2014010600-006.nc

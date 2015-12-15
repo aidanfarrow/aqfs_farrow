@@ -1,0 +1,142 @@
+#!/bin/csh -f
+#PBS -N aqf.20150514
+#PBS -q forecast
+#PBS -l nodes=64
+#PBS -p +64
+#PBS -l walltime=3:30:00
+#PBS -k oe
+#PBS -j oe
+#PBS -m abe
+#PBS -M v.singh3@herts.ac.uk,a.farrow2@herts.ac.uk
+
+echo '<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>'
+echo -n 'Job is running on node(s) '; cat $PBS_NODEFILE
+echo '<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>'
+echo PBS_O_HOST      = $PBS_O_HOST
+echo PBS_O_QUEUE     = $PBS_O_QUEUE
+echo PBS_QUEUE       = $PBS_QUEUE
+echo PBS_O_WORKDIR   = $PBS_O_WORKDIR
+echo PBS_ENVIRONMENT = $PBS_ENVIRONMENT
+echo PBS_JOBID       = $PBS_JOBID
+echo PBS_JOBNAME     = $PBS_JOBNAME
+echo PBS_NODEFILE    = $PBS_NODEFILE
+echo PBS_O_HOME      = $PBS_O_HOME
+echo PBS_O_PATH      = $PBS_O_PATH
+echo '<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>'
+
+cd $PBS_O_WORKDIR
+
+
+setenv MPIRUN /usr/local/bin/mpiexec
+#echo $cwd
+setenv aqfslog $cwd/aqfs.log
+echo $aqfslog
+
+#====================
+alias grlog 'grep -q "$gtext" "$gfile"\
+ if ($? == 0) then \
+    echo "`date +%F_%T`: SUCCESS $gproc">>$aqfslog\
+ else\
+     echo "`date +%F_%T`: FAILED  $gproc">>$aqfslog\
+     exit(1)\
+endif'
+#==================
+
+
+set FDatei=20150514  					# Date of forecast (YYYYMMDD)
+set NumDays=3						# Number of days to be forecasted
+
+set FDate=`date -d "${FDatei} 0 day" +%F`    #YYYY-MM-DD
+set AEnDate=`date -d "${FDatei} 2 day" +%F`	#YYYY-MM-DD
+
+set EnDate=`date -d "${FDatei} ${NumDays} day" +%F`	#YYYY-MM-DD
+
+set day0=`date -d "${FDate} -1 day" +%Y%m%d` 
+set day1=`date -d "${FDate} 0 day" +%Y%m%d` 
+set day2=`date -d "${FDate} 1 day" +%Y%m%d` 
+set day3=`date -d "${FDate} 2 day" +%Y%m%d`
+set day4=`date -d "${FDate} 3 day" +%Y%m%d`
+
+echo $FDate $EnDate 
+
+set StDD=`date -d "${FDate}H01 -1 days" +%d`
+set StMM=`date -d "${FDate}H01 -1 days" +%m`
+set StYYYY=`date -d "${FDate}H01 -1 days" +%Y`
+
+set EnDD=`date -d "${EnDate}H01" +%d`
+set EnMM=`date -d "${EnDate}H01" +%m`
+set EnYYYY=`date -d "${EnDate}H01" +%Y`
+
+
+#echo $StDD $StMM $StYYYY $EnDD $EnMM $EnYYYY 
+
+echo "######################################">>$aqfslog
+echo "`date +%F_%T`: Forecast Started for Date: $FDate" >>$aqfslog
+echo "######################################">>$aqfslog
+
+cd ./wps_wrf_gfs
+
+./clean.sh #Clean previous log files
+
+# Update namelist.wps file
+  sed "s/@sYYYY@/$StYYYY/g;s/@sMM@/$StMM/g;s/@sDD@/$StDD/g; \
+      s/@eYYYY@/$EnYYYY/g;s/@eMM@/$EnMM/g;s/@eDD@/$EnDD/g" \
+     namelist.wps.sam > namelist.wps
+
+# Update namelist.input file
+  sed "s/@sYYYY@/$StYYYY/g;s/@sMM@/$StMM/g;s/@sDD@/$StDD/g; \
+      s/@eYYYY@/$EnYYYY/g;s/@eMM@/$EnMM/g;s/@eDD@/$EnDD/g; \
+      s/@FDate@/$FDate/g" namelist.input.sam > namelist.input
+
+
+#Link grib files
+setenv ICBCPATH /cair-forecast/aqfs/inDATA/GFS/gfs.${FDatei}00   #IC and BC met path
+link_grib_aqf.csh $ICBCPATH/GFS* 
+		  
+./geogrid.exe > geogrid.log
+#====================
+set gtext='Successful completion of program geogrid.exe'
+set gfile='geogrid.log'
+set gproc="GEOGRID	for Date: $FDate to $AEnDate"
+grlog 
+#================== 
+
+./ungrib.exe > ungrib.log
+#====================
+set gtext='Successful completion of ungrib'
+set gfile='ungrib.log'
+set gproc="UNGRIB	for Date: $FDate to $AEnDate"
+grlog 
+#==================  
+
+
+./metgrid.exe > metgrid.log
+#====================
+set gtext='Successful completion of program metgrid.exe '
+set gfile='metgrid.log'
+set gproc="METGRID	for Date: $FDate to $AEnDate"
+grlog 
+#================== 
+
+./real.exe 
+#====================
+set gtext='SUCCESS'
+set gfile='rsl.error.0000'
+set gproc="REAL	for Date: $FDate to $AEnDate"
+grlog 
+#==================
+
+
+#WRF
+mkdir -p ../../data/$FDate/meteo/WRFOUT  #create wrf output directory
+$MPIRUN wrf.exe
+#====================
+set gtext='SUCCESS COMPLETE WRF'
+set gfile='rsl.error.0000'
+set gproc="WRF	for Date: $FDate to $AEnDate"
+grlog 
+#==================
+
+
+echo 'Finished WRF...'
+echo '*****************'

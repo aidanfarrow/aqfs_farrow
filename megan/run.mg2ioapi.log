@@ -1,0 +1,162 @@
+                                                                     
+     This program uses the EPA-AREAL/MCNC-EnvPgms/BAMS Models-3      
+     I/O Applications Programming Interface, [I/O API] which is      
+     built on top of the netCDF I/O library (Copyright 1993, 1996    
+     University Corporation for Atmospheric Research/Unidata         
+     Program) and the PVM parallel-programming library (from         
+     Oak Ridge National Laboratory).  Copyright (C) 1992-2002 MCNC   
+     and Carlie J. Coats, Jr., and 2003-2012 Baron Advanced          
+     Meteorological Systems, LLC and released under the GNU LGPL     
+     License, version 2.1.  See URL                                  
+                                                                     
+         http://www.baronams.com/products/ioapi/LGPL.txt             
+                                                                     
+     for conditions of use.                                          
+                                                                     
+     Library release tag: $JDate: 2012262 $                          
+                                                                     
+     $Id: @(#) ioapi library version 3.1 $
+     Version with PARMS3.EXT/PARAMETER::MXVARS3= 2048
+     netCDF version 4.3.2 of Jul 24 2014 15:49:18 $
+      
+      
+     Missing environment variable EXECUTION_ID
+     Value for GDNAM3D:  'MCIPOUT_d02'
+
+     File "GRIDDESC" opened for input on unit:  99
+     /cair-forecast/aqfs/data/2015-10-02/meteo/MCIPOUT_d02/2015-10-04/GRIDDESC
+
+     Value for PROMPTFLAG:  N returning FALSE
+
+     File "INPFILE" opened for input on unit:  99
+     /cair-forecast/wps/test_megan-v2.0.4/megan_input_data/MCIPIN_d02/EFMAP_LAI.csv
+
+ VNAME:LAT             
+ VNAME:LONG            
+ VNAME:TZONE           
+ VNAME:D_SRAD          
+ VNAME:D_TEMP          
+ VNAME:EF_ISOP         
+ VNAME:EF_MBO          
+ VNAME:EF_MYRC         
+ VNAME:EF_SABI         
+ VNAME:EF_LIMO         
+ VNAME:EF_3CAR         
+ VNAME:EF_OCIM         
+ VNAME:EF_BPIN         
+ VNAME:EF_APIN         
+ VNAME:EF_FARN         
+ VNAME:EF_BCAR         
+ VNAME:EF_MEOH         
+ VNAME:EF_ACTO         
+ VNAME:EF_ACTA         
+ VNAME:EF_FORM         
+ VNAME:EF_CH4          
+ VNAME:EF_NO           
+ VNAME:EF_OMTP         
+ VNAME:EF_OSQT         
+ VNAME:EF_CO           
+ VNAME:LAI1            
+ VNAME:LAI2            
+ VNAME:LAI3            
+ VNAME:LAI4            
+ VNAME:LAI5            
+ VNAME:LAI6            
+ VNAME:LAI7            
+ VNAME:LAI8            
+ VNAME:LAI9            
+ VNAME:LAI10           
+ VNAME:LAI11           
+ VNAME:LAI12           
+     Total number of input lines read:   12371
+     
+     Value for IOAPI_CHECK_HEADERS not defined;returning default:   FALSE
+     Value for IOAPI_OFFSET_64 not defined;returning default:   FALSE
+      
+     "OUTFILE" opened as NEW(CREAT/TRUNC)
+     File name "/cair-forecast/aqfs/data/2015-10-02/emiss/biogenic/2015-10-04/EFMAP_LAI_d02.ncf"
+     File type GRDDED3 
+     Execution ID "????????????????"
+     Grid name "MCIPOUT_d02"
+     Dimensions: 147 rows, 117 cols, 1 lays, 37 vbles
+     NetCDF ID:     65536  opened as READWRITE           
+     Time-independent data.
+ min cell value for:LAT   0.00000000    
+ max cell value for:LAT   61.5720711    
+     Value for IOAPI_LOG_WRITE:  F returning FALSE
+ min cell value for:LONG  -15.2457304    
+ max cell value for:LONG   3.69531012    
+ min cell value for:TZONE   0.00000000    
+ max cell value for:TZONE   0.00000000    
+ min cell value for:D_SRAD   0.00000000    
+ max cell value for:D_SRAD   0.00000000    
+ min cell value for:D_TEMP   0.00000000    
+ max cell value for:D_TEMP   0.00000000    
+ min cell value for:EF_ISOP   0.00000000    
+ max cell value for:EF_ISOP   5878.50000    
+ min cell value for:EF_MBO   0.00000000    
+ max cell value for:EF_MBO   279.920990    
+ min cell value for:EF_MYRC   0.00000000    
+ max cell value for:EF_MYRC   179.050995    
+ min cell value for:EF_SABI   0.00000000    
+ max cell value for:EF_SABI   52.3333015    
+ min cell value for:EF_LIMO   0.00000000    
+ max cell value for:EF_LIMO   118.333000    
+ min cell value for:EF_3CAR   0.00000000    
+ max cell value for:EF_3CAR   155.000000    
+ min cell value for:EF_OCIM   0.00000000    
+ max cell value for:EF_OCIM   162.505005    
+ min cell value for:EF_BPIN   0.00000000    
+ max cell value for:EF_BPIN   193.000000    
+ min cell value for:EF_APIN   0.00000000    
+ max cell value for:EF_APIN   453.333008    
+ min cell value for:EF_FARN   0.00000000    
+ max cell value for:EF_FARN   1.00000000    
+ min cell value for:EF_BCAR   0.00000000    
+ max cell value for:EF_BCAR   1.00000000    
+ min cell value for:EF_MEOH   0.00000000    
+ max cell value for:EF_MEOH   1492.50000    
+ min cell value for:EF_ACTO   0.00000000    
+ max cell value for:EF_ACTO   1.00000000    
+ min cell value for:EF_ACTA   0.00000000    
+ max cell value for:EF_ACTA   1.00000000    
+ min cell value for:EF_FORM   0.00000000    
+ max cell value for:EF_FORM   1.00000000    
+ min cell value for:EF_CH4   0.00000000    
+ max cell value for:EF_CH4   1.00000000    
+ min cell value for:EF_NO   0.00000000    
+ max cell value for:EF_NO   75.5949020    
+ min cell value for:EF_OMTP   0.00000000    
+ max cell value for:EF_OMTP   1.00000000    
+ min cell value for:EF_OSQT   0.00000000    
+ max cell value for:EF_OSQT   1.00000000    
+ min cell value for:EF_CO   0.00000000    
+ max cell value for:EF_CO   1.00000000    
+ min cell value for:LAI1   0.00000000    
+ max cell value for:LAI1   5.45200014    
+ min cell value for:LAI2   0.00000000    
+ max cell value for:LAI2   5.63733006    
+ min cell value for:LAI3   0.00000000    
+ max cell value for:LAI3   6.00000000    
+ min cell value for:LAI4   0.00000000    
+ max cell value for:LAI4   6.00000000    
+ min cell value for:LAI5   0.00000000    
+ max cell value for:LAI5   6.00000000    
+ min cell value for:LAI6   0.00000000    
+ max cell value for:LAI6   6.00000000    
+ min cell value for:LAI7   0.00000000    
+ max cell value for:LAI7   6.00000000    
+ min cell value for:LAI8   0.00000000    
+ max cell value for:LAI8   6.00000000    
+ min cell value for:LAI9   0.00000000    
+ max cell value for:LAI9   6.00000000    
+ min cell value for:LAI10   0.00000000    
+ max cell value for:LAI10   5.43599987    
+ min cell value for:LAI11   0.00000000    
+ max cell value for:LAI11   6.00000000    
+ min cell value for:LAI12   0.00000000    
+ max cell value for:LAI12   5.73832989    
+     
+     --->> Normal Completion of program MG2IOAPI
+     
+     

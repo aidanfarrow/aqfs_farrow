@@ -1,0 +1,1 @@
+ * * * * * /cair-forecast/aqfs/scripts/dnld_gfs/dnld.sh>vikas.txt

@@ -1,0 +1,160 @@
+#! /bin/csh -f
+########################################################################
+## Source setcase
+source /cair-forecast/aqfs/exe/megan-v2.0.4/gfortran.forecast/setcase
+########################################################################
+
+##################################################
+#Variables
+set DOMAIN=@Domain@
+set FDATE=@FDate@
+set RDATE=@cDate@ #Run date
+set JDATE=@JulDay@
+##################################################
+
+########################################################################
+## Directory setups
+setenv PROMPTFLAG N
+
+# Program directory
+setenv EXEDIR $MGNEXE
+
+# Input map data directory or Megan input data directory
+setenv INPDIR /cair-forecast/wps/test_megan-v2.0.4/megan_input_data/MCIPIN_d$DOMAIN
+
+# MCIP input directory
+setenv METDIR /cair-forecast/aqfs/data/$FDATE/meteo/MCIPOUT_d$DOMAIN/$RDATE
+
+# Output directory
+setenv OUTDIR /cair-forecast/aqfs/data/$FDATE/emiss/biogenic/$RDATE
+
+# Intermediate file directory
+setenv INTDIR $OUTDIR
+
+# Grid desription file
+setenv GRIDDESC /cair-forecast/aqfs/data/$FDATE/meteo/MCIPOUT_d$DOMAIN/$RDATE/GRIDDESC
+
+#Grid name
+setenv GDNAM3D MCIPOUT_d$DOMAIN
+########################################################################
+
+
+
+########################################################################
+#MG2IOAPI SETUP
+########################################################################
+
+
+setenv INPFILE $INPDIR/EFMAP_LAI.csv
+setenv OUTFILE $OUTDIR/EFMAP_LAI_d$DOMAIN.ncf
+
+#--------------------------------------------------------
+## Run MG2IOAPI
+#rm -r $OUTDIR
+mkdir -p $OUTDIR
+$EXEDIR/mg2ioapi >& run.mg2ioapi.log
+echo 'Finished MG2IOAPI'
+
+########################################################################
+
+
+
+########################################################################
+# Set up time and date to process
+setenv SDATE $JDATE    #start date
+setenv STIME 0
+setenv RLENG 250000
+setenv TSTEP 10000
+########################################################################
+
+########################################################################
+#MEGAN SETUP
+########################################################################
+
+setenv RUN_MEGAN      Y    # run megan?
+
+setenv MGNTONHR       N    # MEGAN output unit in tonnes per hour
+                           # if MGNTONHR is Y, not run speciation
+                           # this will produce only MEGAN 20 species
+
+setenv ONLN_DTEMP     Y    # Online calculate daily average temperature
+                           # from MCIP data (default is "YES")
+                           # If "NO", MEGAN will look for the data
+                           # from ECMAP and user has to provide.
+
+setenv ONLN_DSRAD     Y    # Online calculate daily average solar
+                           # radiation from MCIP data (default is "YES")
+                           # If "NO", MEGAN will look for the data
+                           # from ECMAP and user has to provide.
+
+# Input EF map
+setenv ECMAP $OUTDIR/EFMAP_LAI_d$DOMAIN.ncf
+# Output
+setenv EROUT $OUTDIR/ER_MEGAN_${RDATE}_d$DOMAIN.ncf
+
+## METCRO3D
+# TA - air temperature (K) (default)
+
+## METCRO2D
+# TEMPG - skin temperature on ground (K)
+# TEMP10 - air temperature at 10m (K)
+# TEMP1P5 - air temperature at 1.5m (K) (default)
+# GSW - Solar radiation absorved at ground (W/m2)
+# RGRND - Solar radiation reaching surface (W/m2) (default)
+
+# Temperature file and temperature variable
+setenv TMPFILE $METDIR/METCRO2D_MCIPOUT
+# TA, TEMPG, TEMP10, TEMP1P5
+setenv TEMPVAR TEMP2     # temperature variable to use from MCIP
+                                                                                         
+# Solar radiation file and solar radiation variable
+setenv RADFILE $METDIR/METCRO2D_MCIPOUT
+# GSW, RGRND
+setenv SRADVAR RGRND       # short wave variable
+                                                                                         
+#-----------------------------------------------------------------
+## Run MEGAN
+if ( $RUN_MEGAN == 'Y' ) then
+   rm -f $EROUT
+   $EXEDIR/megan >&! run.megan.log
+endif
+#rm -f ../data/emiss/biogenic/THEDATE/EFMAP_LAI.ncf
+echo 'Finished MEGAN'
+
+########################################################################
+#MG2MECH SETUP
+########################################################################
+# Set up for MECHCONV
+setenv RUN_SPECIATE   Y    # run speciation to 138
+                           # units are g/s
+
+setenv RUN_CONVERSION Y    # run conversions?
+                           # run conversions MEGAN to model mechanism
+                           # units are mole/s
+
+setenv SPCTONHR       N    # speciation output unit in tonnes per hour
+                           # This will convert 134 species to tonne per
+                           # hour or mechasnim species to tonne per hour.
+
+# If RUN_CONVERSION is set to "Y", one of mechanisms has to be selected.
+#setenv MECHANISM    SAPRCII
+#setenv MECHANISM    SAPRC99
+#setenv MECHANISM    RADM2
+#setenv MECHANISM    RACM
+#setenv MECHANISM    CBMZ
+ setenv MECHANISM    CB05SOA
+
+# MEGAN ER filename
+   setenv MGERFILE $EROUT
+# PFT fraction filename
+   setenv PFTFFILE $INPDIR/PFTF.csv
+# Output filename
+   setenv OUTPFILE $OUTDIR/b3gts_l.$RDATE.d$DOMAIN.ensclim.ncf
+#------------------------------------------------------------------
+## Run speciation and mechanism conversion
+if ( $RUN_SPECIATE == 'Y' ) then
+   rm -f $OUTPFILE
+   $EXEDIR/mg2mech >& run.mg2mech.log
+endif
+#rm -f ../data/emiss/biogenic/THEDATE/ER_MEGAN_THEDATE.ncf
+echo 'Finished MG2MECH'

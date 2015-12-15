@@ -1,0 +1,58 @@
+#!/bin/sh -f
+#PBS -N mcip
+#PBS -q cair_l
+#PBS -l nodes=8 
+#PBS -l walltime=12:00:00
+#PBS -k oe
+#PBS -j oe
+#PBS -m abe
+#PBS -M x.francis@herts.ac.uk
+
+echo '<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>'
+echo -n 'Job is running on node(s) '; cat $PBS_NODEFILE
+echo '<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>'
+echo PBS_O_HOST      = $PBS_O_HOST
+echo PBS_O_QUEUE     = $PBS_O_QUEUE
+echo PBS_QUEUE       = $PBS_QUEUE
+echo PBS_O_WORKDIR   = $PBS_O_WORKDIR
+echo PBS_ENVIRONMENT = $PBS_ENVIRONMENT
+echo PBS_JOBID       = $PBS_JOBID
+echo PBS_JOBNAME     = $PBS_JOBNAME
+echo PBS_NODEFILE    = $PBS_NODEFILE
+echo PBS_O_HOME      = $PBS_O_HOME
+echo PBS_O_PATH      = $PBS_O_PATH
+echo '<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>'
+
+cd $PBS_O_WORKDIR
+
+export MY_EXE=./run.mcip.defraP2_auto.bash
+$MY_EXE 051201 10 T >& 12_05_10.log
+#$MY_EXE 060101 10 T >& 01_10.log
+#$MY_EXE 060201 10 T >& 02_10.log
+#$MY_EXE 060301 10 T >& 03_10.log
+#$MY_EXE 060401 10 T >& 04_10.log
+#$MY_EXE 060501 10 T >& 05_10.log
+#$MY_EXE 060601 10 T >& 06_10.log
+#$MY_EXE 060701 10 T >& 07_10.log
+#$MY_EXE 060801 10 T >& 08_10.log
+#$MY_EXE 060901 10 T >& 09_10.log
+#$MY_EXE 061001 10 T >& 10_10.log
+#$MY_EXE 061101 10 T >& 11_10.log
+#$MY_EXE 061201 10 T >& 12_10.log
+$MY_EXE 051201 50 T >& 12_05_50.log
+#$MY_EXE 060101 50 T >& 01_50.log
+#$MY_EXE 060201 50 T >& 02_50.log
+#$MY_EXE 060301 50 T >& 03_50.log
+#$MY_EXE 060401 50 T >& 04_50.log
+#$MY_EXE 060501 50 T >& 05_50.log
+#$MY_EXE 060601 50 T >& 06_50.log
+#$MY_EXE 060701 50 T >& 07_50.log
+#$MY_EXE 060801 50 T >& 08_50.log
+#$MY_EXE 060901 50 T >& 09_50.log
+#$MY_EXE 061001 50 T >& 10_50.log
+#$MY_EXE 061101 50 T >& 11_50.log
+#$MY_EXE 061201 50 T >& 12_50.log
+
+echo '<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>'
+echo Job terminated
+echo '<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>'

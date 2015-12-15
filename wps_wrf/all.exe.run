@@ -1,0 +1,147 @@
+#!/bin/csh -f
+#PBS -N wrf
+#PBS -q forecast
+#PBS -l nodes=128
+#PBS -l walltime=12:00:00
+#PBS -k oe
+#PBS -j oe
+#PBS -m abe
+##PBS -M v.singh3@herts.ac.uk 
+
+echo '<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>'
+echo -n 'Job is running on node(s) '; cat $PBS_NODEFILE
+echo '<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>'
+echo PBS_O_HOST      = $PBS_O_HOST
+echo PBS_O_QUEUE     = $PBS_O_QUEUE
+echo PBS_QUEUE       = $PBS_QUEUE
+echo PBS_O_WORKDIR   = $PBS_O_WORKDIR
+echo PBS_ENVIRONMENT = $PBS_ENVIRONMENT
+echo PBS_JOBID       = $PBS_JOBID
+echo PBS_JOBNAME     = $PBS_JOBNAME
+echo PBS_NODEFILE    = $PBS_NODEFILE
+echo PBS_O_HOME      = $PBS_O_HOME
+echo PBS_O_PATH      = $PBS_O_PATH
+echo '<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>'
+
+cd $PBS_O_WORKDIR
+
+#export MY_EXE=wrf.exe
+#export MPIRUN=/usr/local/bin/mpiexec
+setenv MPIRUN /usr/local/bin/mpiexec
+
+#Delete files
+#del_log_files.csh
+#rm -r geogrid.o* real.o* ungrib.o* wrf.o*  # Delete files from home folder
+
+
+
+set FDatei=20060511  					# Date of forecast (YYYYMMDD)
+set NumDays=3						# Number of days to be forecasted
+
+set FDate=`date -d "${FDatei} 0 day" +%F`    #YYYY-MM-DD
+set EnDate=`date -d "${FDatei} ${NumDays} day" +%F`	#YYYY-MM-DD
+
+
+
+echo $FDate $EnDate >& abc
+
+set StDD=`date -d "${FDate}H01 -1 days" +%d`
+set StMM=`date -d "${FDate}H01 -1 days" +%m`
+set StYYYY=`date -d "${FDate}H01 -1 days" +%Y`
+
+set EnDD=`date -d "${EnDate}H01" +%d`
+set EnMM=`date -d "${EnDate}H01" +%m`
+set EnYYYY=`date -d "${EnDate}H01" +%Y`
+
+
+echo $StDD $StMM $StYYYY $EnDD $EnMM $EnYYYY >>& abc
+
+# Update namelist.wps file
+  sed "s/@sYYYY@/$StYYYY/g;s/@sMM@/$StMM/g;s/@sDD@/$StDD/g; \
+      s/@eYYYY@/$EnYYYY/g;s/@eMM@/$EnMM/g;s/@eDD@/$EnDD/g" \
+     namelist.wps.sam > namelist.wps
+
+# Update namelist.input file
+  sed "s/@sYYYY@/$StYYYY/g;s/@sMM@/$StMM/g;s/@sDD@/$StDD/g; \
+      s/@eYYYY@/$EnYYYY/g;s/@eMM@/$EnMM/g;s/@eDD@/$EnDD/g; \
+      s/@FDate@/$FDate/g" namelist.input.sam > namelist.input
+
+
+
+#link_grib.csh 
+link_grib.csh /cair-forecast/aqfs/inDATA/ecmwf/ECMWF_AN_200605
+
+./geogrid.exe > geogrid.log
+./ungrib.exe > ungrib.log
+$MPIRUN metgrid.exe
+$MPIRUN real.exe
+
+
+#WRF
+mkdir -p ../../data/$FDate/meteo/WRFOUT  #create wrf output directory
+$MPIRUN wrf.exe
+
+echo 'Finished WRF...'
+echo '*****************'
+
+
+
+#Run MCIP
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+cd ../mcip/
+
+set date_ini=`date -d "${FDate} 0 day" +%Y%m%d`       # Initial date yyyymmdd (Date comes from FDate, that is forecast date)
+set date_end=`date -d "${date_ini} 2 day" +%Y%m%d` 
+
+
+#echo $date_ini $date_end
+
+set step_days=1  
+set di=$date_ini
+
+
+while ( $di <= $date_end ) ;  # Date loop for three days
+
+
+set cDD=`date -d "${di}" +%F` 		#Current date
+set nDD=`date -d "${di} 1 day" +%F` 	#Next date
+set pDD=`date -d "${di} -1 day" +%F`	#previous date
+
+echo 'Running MCIP3 for Date:'$cDD
+echo '*****************'
+
+
+ sed -e "s/@cDate@/$cDD/g;s/@pDate@/$pDD/g;s/@nDate@/$nDD/g;\
+s/@FDate@/$FDate/g"  run.mcip.d1 > run.mcip.d1.tmp;
+  chmod +x run.mcip.d1.tmp
+  ./run.mcip.d1.tmp >& mcip_d1.log
+  
+echo 'Domain 1 finished'
+
+ sed -e "s/@cDate@/$cDD/g;s/@pDate@/$pDD/g;s/@nDate@/$nDD/g;\
+s/@FDate@/$FDate/g" run.mcip.d2 > run.mcip.d2.tmp;
+  chmod +x run.mcip.d2.tmp
+  ./run.mcip.d2.tmp >& mcip_d2.log
+
+
+echo 'Domain 2 finished'
+echo 'Finished MCIP3...'
+echo '*****************'
+
+
+set di=`date -d "${di}H01 $step_days days" +%Y%m%d`
+end
+
+cd ../wps_wrf/
+
+
+
+
+
+
+
+
+
+echo '<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>'
+echo Job terminated
+echo '<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>'
